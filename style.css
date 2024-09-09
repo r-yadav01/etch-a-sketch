@@ -5,11 +5,16 @@
 body {
     padding: 10px;
 }
+.container {
+    border-style: solid;
+    border-width: 1px;
+    border-color:black;
+}
 .row {
     display: flex;
 }
 .row_item {
     border-style: solid;
     border-width: 1px;
-    border-color:black;
+    border-color:gray;
 }

@@ -49,13 +49,14 @@ function addListeners() {
             if (isMousedown)
                 event.target.style.backgroundColor = '';
             else if (isMousedown === false)
-                event.target.style.backgroundColor = 'grey';
+                event.target.style.backgroundColor = chooseColor();
         }    
     }, true);
 
-    container.addEventListener('click', (event) => {
+    container.addEventListener('dblclick', (event) => {
         if (event.target.classList.contains('row_square'))
-            event.target.style.backgroundColor = '';
+            if (isMousedown == false || isMousedown == true)
+                isMousedown = '';
     }, true);
 
     container.addEventListener('mousedown', (event) => {
@@ -68,4 +69,8 @@ function addListeners() {
             isMousedown = false;
     }, true);
 
+}
+
+function chooseColor() {
+    return 'black';
 }

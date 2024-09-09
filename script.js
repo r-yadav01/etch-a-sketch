@@ -38,4 +38,34 @@ function createContainer (numSquare = 16) {
 
 document.addEventListener('DOMContentLoaded', () => {
     createContainer();
+    addListeners();
 })
+
+function addListeners() {
+    let isMousedown;
+    const container = document.querySelector('.container');
+    container.addEventListener('mouseenter', (event) => {
+        if (event.target.classList.contains('row_square')) {
+            if (isMousedown)
+                event.target.style.backgroundColor = '';
+            else if (isMousedown === false)
+                event.target.style.backgroundColor = 'grey';
+        }    
+    }, true);
+
+    container.addEventListener('click', (event) => {
+        if (event.target.classList.contains('row_square'))
+            event.target.style.backgroundColor = '';
+    }, true);
+
+    container.addEventListener('mousedown', (event) => {
+        if (event.target.classList.contains('row_square'))
+            isMousedown = true;
+    }, true);
+
+    container.addEventListener('mouseup', (event) => {
+        if (event.target.classList.contains('row_square'))
+            isMousedown = false;
+    }, true);
+
+}

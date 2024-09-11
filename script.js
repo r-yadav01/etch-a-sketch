@@ -27,7 +27,7 @@ function createContainer (numSquare = 16) {
             square.classList.add('row_square');
             square.style.width = squareSide + 'px';
             square.style.height = squareSide + 'px';
-            square.style.backgroundColor = 'white';
+            square.style.backgroundColor = white;
             row.appendChild(square);
         }
         container.appendChild(row);
@@ -64,23 +64,37 @@ function canvasListeners() {
     // when not paused, if mousebutton is pressed it will erase else it will color
     container.addEventListener('mouseenter', (event) => {
         if (event.target.classList.contains('row_square')) {
-            if (isMousedown && !dblclkPause)
-                event.target.style.backgroundColor = 'white';
-            else if (isMousedown === false && !dblclkPause)
-                event.target.style.backgroundColor = chooseColor(randomColor);
+            if (isMousedown && !dblclkPause) {
+                event.target.style.backgroundColor = white;
+                event.target.style.opacity = 1;
+            }
+            else if (isMousedown === false && !dblclkPause) {
+                let currentBgColor = window.getComputedStyle(event.target).backgroundColor;
+                if (currentBgColor === white) {
+                    event.target.style.backgroundColor = chooseColor(randomColor);
+                    event.target.style.opacity = 0.2;
+                }
+                else {
+                    // increase darkness
+                    let currentOpacity = parseFloat(event.target.style.opacity) || 0.1;
+                    event.target.style.opacity = Math.min(currentOpacity + 0.2, 1);
+                }
+            }
         }   
     }, true);
 
 
     // will decide whether to color black or any random color
-    let randomButton = document.querySelector('.randomColor');
-    randomButton.addEventListener('click', () => {
+    let colorButton = document.querySelector('.colors');
+    colorButton.addEventListener('click', () => {
         if (randomColor) {
-            randomButton.style.backgroundColor = 'rgb(250, 0, 0)';
+            colorButton.style.backgroundColor = 'rgb(250, 0, 0)';
+            colorButton.textContent = 'Shades of Grey';
             randomColor = false;
         }
         else {
-            randomButton.style.backgroundColor = 'rgb(0, 250, 0)';
+            colorButton.style.backgroundColor = 'rgb(0, 250, 0)';
+            colorButton.textContent = 'Random Colors'
             randomColor = true;
         }
     });
@@ -97,7 +111,8 @@ function canvasListeners() {
 let handleClearBtn = () => {
     let squares = document.querySelectorAll('.row_square');
     squares.forEach((square) => {
-        square.style.backgroundColor = 'white';
+        square.style.backgroundColor = white;
+        square.style.opacity = 1;
     })
 }
 
@@ -121,8 +136,10 @@ let handleSizeBtnEvent = () => {
 }
 
 function chooseColor(random = false) {
-    if (!random) 
-        return 'black';
+    if (!random) {
+        // let shade = Math.floor(Math.random() * 256);
+        return `rgb(${0}, ${0}, ${0})`;
+    }
     else if (random) {
         let r = Math.floor(Math.random() * 256);
         let g = Math.floor(Math.random() * 256);
@@ -132,6 +149,7 @@ function chooseColor(random = false) {
 }
 
 let dblclkPause = true;
+const white = "rgb(255, 255, 255)";
 
 document.addEventListener('DOMContentLoaded', () => {
     createContainer();

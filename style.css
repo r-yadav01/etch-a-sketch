@@ -44,7 +44,7 @@ button {
     border-width: 5px;
 }
 
-button.randomColor {
+button.colors {
     background-color: rgb(250, 0, 0);
 }
 button.clearCanvas {

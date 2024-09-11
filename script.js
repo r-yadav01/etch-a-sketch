@@ -27,6 +27,7 @@ function createContainer (numSquare = 16) {
             square.classList.add('row_square');
             square.style.width = squareSide + 'px';
             square.style.height = squareSide + 'px';
+            square.style.backgroundColor = 'white';
             row.appendChild(square);
         }
         container.appendChild(row);
@@ -64,7 +65,7 @@ function canvasListeners() {
     container.addEventListener('mouseenter', (event) => {
         if (event.target.classList.contains('row_square')) {
             if (isMousedown && !dblclkPause)
-                event.target.style.backgroundColor = '';
+                event.target.style.backgroundColor = 'white';
             else if (isMousedown === false && !dblclkPause)
                 event.target.style.backgroundColor = chooseColor(randomColor);
         }   
@@ -87,6 +88,17 @@ function canvasListeners() {
     // changes canvas size according to the input number
     let sizeBtn = document.querySelector('.containerSize');
     sizeBtn.addEventListener('click', handleSizeBtnEvent);
+
+    // clears canvas
+    let clearBtn = document.querySelector('.clearCanvas');
+    clearBtn.addEventListener('click', handleClearBtn);
+}
+
+let handleClearBtn = () => {
+    let squares = document.querySelectorAll('.row_square');
+    squares.forEach((square) => {
+        square.style.backgroundColor = 'white';
+    })
 }
 
 let handleSizeBtnEvent = () => {

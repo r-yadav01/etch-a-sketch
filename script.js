@@ -36,29 +36,20 @@ function createContainer (numSquare = 16) {
     body.appendChild(container);
 } 
 
-document.addEventListener('DOMContentLoaded', () => {
-    createContainer();
-    addListeners();
-})
+function canvasListeners() { 
+    let randomColor = false;
 
-function addListeners() {
-    let isMousedown;
+    // dblclicking on the canvas will pause or resume the coloring or erasing
     const container = document.querySelector('.container');
-    container.addEventListener('mouseenter', (event) => {
-        if (event.target.classList.contains('row_square')) {
-            if (isMousedown)
-                event.target.style.backgroundColor = '';
-            else if (isMousedown === false)
-                event.target.style.backgroundColor = chooseColor();
-        }    
+    container.addEventListener('dblclick', () => {
+        if (dblclkPause) 
+            dblclkPause = false;
+        else if (!dblclkPause)
+            dblclkPause = true;
     }, true);
 
-    container.addEventListener('dblclick', (event) => {
-        if (event.target.classList.contains('row_square'))
-            if (isMousedown == false || isMousedown == true)
-                isMousedown = '';
-    }, true);
-
+    // 'isMousedown' will decide whether to erase or color
+    let isMousedown;
     container.addEventListener('mousedown', (event) => {
         if (event.target.classList.contains('row_square'))
             isMousedown = true;
@@ -69,8 +60,73 @@ function addListeners() {
             isMousedown = false;
     }, true);
 
+    // when not paused, if mousebutton is pressed it will erase else it will color
+    container.addEventListener('mouseenter', (event) => {
+        if (event.target.classList.contains('row_square')) {
+            if (isMousedown && !dblclkPause)
+                event.target.style.backgroundColor = '';
+            else if (isMousedown === false && !dblclkPause)
+                event.target.style.backgroundColor = chooseColor(randomColor);
+        }   
+    }, true);
+
+
+    // will decide whether to color black or any random color
+    let randomButton = document.querySelector('.randomColor');
+    randomButton.addEventListener('click', () => {
+        if (randomColor) {
+            randomButton.style.backgroundColor = 'rgb(250, 0, 0)';
+            randomColor = false;
+        }
+        else {
+            randomButton.style.backgroundColor = 'rgb(0, 250, 0)';
+            randomColor = true;
+        }
+    });
+
+    // changes canvas size according to the input number
+    let sizeBtn = document.querySelector('.containerSize');
+    sizeBtn.addEventListener('click', handleSizeBtnEvent);
 }
 
-function chooseColor() {
-    return 'black';
+let handleSizeBtnEvent = () => {
+    let message = 'Enter the size of canvas between 1 and 100 (inclusive)';
+
+    let canvasSize = '';
+    while (canvasSize === '' || canvasSize <= 0 || canvasSize > 100 || !Number.isInteger(Number(canvasSize)))
+        canvasSize = Number(prompt(message));
+    
+    canvasSize = Number(canvasSize);
+    let containers = document.querySelectorAll('.container');
+    containers.forEach((cont) => {
+        cont.remove();
+    });
+
+    let sizeBtn = document.querySelector('.containerSize');
+    sizeBtn.removeEventListener('click', handleSizeBtnEvent);
+    createContainer(canvasSize);
+    canvasListeners();
 }
+
+function chooseColor(random = false) {
+    if (!random) 
+        return 'black';
+    else if (random) {
+        let r = Math.floor(Math.random() * 256);
+        let g = Math.floor(Math.random() * 256);
+        let b = Math.floor(Math.random() * 256);
+        return `rgb(${r}, ${g}, ${b})`;
+    }
+}
+
+let dblclkPause = true;
+
+document.addEventListener('DOMContentLoaded', () => {
+    createContainer();
+    canvasListeners();
+})
+
+
+
+
+

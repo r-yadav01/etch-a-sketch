@@ -89,7 +89,7 @@ function canvasListeners() {
     colorButton.addEventListener('click', () => {
         if (randomColor) {
             colorButton.style.backgroundColor = 'rgb(250, 0, 0)';
-            colorButton.textContent = 'Shades of Grey';
+            colorButton.textContent = 'Black Color';
             randomColor = false;
         }
         else {
@@ -133,6 +133,9 @@ let handleSizeBtnEvent = () => {
     sizeBtn.removeEventListener('click', handleSizeBtnEvent);
     createContainer(canvasSize);
     canvasListeners();
+    let colorButton = document.querySelector('.colors');
+    colorButton.style.backgroundColor = 'rgb(250, 0, 0)';
+    colorButton.textContent = 'Black Color';
 }
 
 function chooseColor(random = false) {
